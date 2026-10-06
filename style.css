@@ -1,0 +1,417 @@
+:root {
+    --primary-grad: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+    --accent-grad: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+    --rainbow-grad: linear-gradient(90deg, #ff007f, #7928ca, #00f2fe, #43e97b, #fa709a, #fee140);
+    --card-bg: rgba(255, 255, 255, 0.07);
+    --card-border: rgba(255, 255, 255, 0.18);
+    --glow-color: rgba(255, 0, 128, 0.35);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', 'Kantumruy Pro', system-ui, sans-serif;
+    color: #fff;
+    background: #090714;
+    overflow: hidden;
+    position: relative;
+    perspective: 1000px;
+}
+
+/* Ambient Glowing Background Orbs */
+.bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.55;
+    animation: float 14s infinite alternate ease-in-out;
+}
+
+.orb-1 {
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, #7928ca, #4338ca);
+    top: -10%;
+    left: -10%;
+    animation-duration: 12s;
+}
+
+.orb-2 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #ff007f, #7928ca);
+    bottom: -15%;
+    right: -10%;
+    animation-duration: 16s;
+    animation-delay: -3s;
+}
+
+.orb-3 {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #00f2fe, #4facfe);
+    top: 40%;
+    left: 55%;
+    animation-duration: 10s;
+    animation-delay: -6s;
+}
+
+@keyframes float {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(60px, 40px) scale(1.15) rotate(180deg); }
+    100% { transform: translate(-40px, 80px) scale(0.9) rotate(360deg); }
+}
+
+/* Animated Floating Dust Particles */
+.floating-star {
+    position: fixed;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px #fff, 0 0 20px #00f2fe;
+    animation: twinkle var(--duration, 4s) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: translateY(0) scale(0.6); }
+    50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
+}
+
+/* Main Card Container */
+.card-container {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+.card {
+    position: relative;
+    width: 350px;
+    min-height: 270px;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 28px;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(255, 0, 128, 0.15),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+    overflow: hidden;
+}
+
+/* Card Shimmer Border Highlight */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent 40%, rgba(255,0,128,0.4));
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.card.opened {
+    width: 480px;
+    max-width: 90vw;
+    min-height: 280px;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7),
+                0 0 60px rgba(0, 242, 254, 0.25),
+                inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+/* Intro Screen */
+.intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro.hide {
+    opacity: 0;
+    transform: scale(0.7) translateY(-20px);
+    pointer-events: none;
+}
+
+.intro.gone {
+    display: none;
+}
+
+/* Envelope / Icon with Bounce & Glow */
+.icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.icon {
+    font-size: 72px;
+    display: inline-block;
+    filter: drop-shadow(0 10px 20px rgba(255, 0, 128, 0.4));
+    animation: envelopeBounce 2.5s infinite ease-in-out;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.icon:hover {
+    transform: scale(1.18) rotate(5deg);
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255, 0, 128, 0.3);
+    z-index: -1;
+    animation: pulseWave 2s infinite ease-out;
+}
+
+@keyframes pulseWave {
+    0% { transform: scale(0.6); opacity: 0.9; }
+    100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes envelopeBounce {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    20% { transform: translateY(-12px) rotate(-8deg); }
+    40% { transform: translateY(0) rotate(8deg); }
+    60% { transform: translateY(-6px) rotate(-4deg); }
+    80% { transform: translateY(0) rotate(0deg); }
+}
+
+h3 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 22px;
+    background: linear-gradient(135deg, #ffffff 30%, #ffd6e8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Modern Gradient Interactive Button */
+.btn-primary {
+    position: relative;
+    padding: 14px 42px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    color: #fff;
+    border: 0;
+    border-radius: 50px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff0844 0%, #ff4e50 50%, #f9d423 100%);
+    background-size: 200% auto;
+    box-shadow: 0 10px 30px rgba(255, 8, 68, 0.45),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 40px;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.35);
+    transform: rotate(30deg);
+    transition: all 0.6s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px) scale(1.06);
+    box-shadow: 0 15px 40px rgba(255, 8, 68, 0.65), 0 0 25px rgba(249, 212, 35, 0.5);
+    background-position: right center;
+}
+
+.btn-primary:hover::after {
+    left: 140%;
+}
+
+.btn-primary:active {
+    transform: translateY(1px) scale(0.96);
+}
+
+/* Revealed Message Box */
+.message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+}
+
+#msg {
+    font-size: 38px;
+    font-weight: 900;
+    line-height: 1.3;
+    background: linear-gradient(90deg, #ff007f, #00f2fe, #fee140, #ff007f);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientShift 4s linear infinite;
+    filter: drop-shadow(0 6px 25px rgba(0, 242, 254, 0.3));
+    word-break: break-word;
+    min-height: 50px;
+    display: inline-block;
+}
+
+/* Blinking Cursor for Typing */
+.cursor {
+    display: inline-block;
+    width: 4px;
+    height: 34px;
+    margin-left: 6px;
+    background: #00f2fe;
+    border-radius: 2px;
+    vertical-align: middle;
+    animation: blink 0.7s infinite;
+    box-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe;
+}
+
+.cursor.hidden {
+    display: none;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Back Button */
+#back {
+    display: none;
+    margin-top: 28px;
+    padding: 10px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#back:hover {
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+#back:active {
+    transform: scale(0.95);
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.5) translateY(10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Confetti Pieces */
+.confetti {
+    position: fixed;
+    top: -20px;
+    width: 12px;
+    height: 16px;
+    pointer-events: none;
+    z-index: 100;
+    border-radius: 3px;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(115vh) rotateX(720deg) rotateY(1080deg) rotateZ(360deg);
+        opacity: 0.2;
+    }
+}
+
+/* Floating Emoji Reaction Blast */
+.float-emoji {
+    position: fixed;
+    font-size: 28px;
+    pointer-events: none;
+    z-index: 99;
+    animation: floatUp 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(var(--tx-start, 0), -40px) scale(1.3) rotate(var(--rot, 15deg));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--tx-end, 50px), -180px) scale(1) rotate(var(--rot-end, 45deg));
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        width: 90vw;
+        padding: 30px 20px;
+    }
+    #msg {
+        font-size: 28px;
+    }
+    h3 {
+        font-size: 20px;
+    }
+}

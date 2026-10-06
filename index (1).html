@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Special Message ✨</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Kantumruy+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Ambient glowing backgrounds -->
+    <div class="bg-canvas">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Main 3D Card Container -->
+    <div class="card-container" id="cardContainer">
+        <div class="card" id="card">
+            <div class="intro" id="intro">
+                <div class="icon-wrapper" onclick="openMsg()">
+                    <div class="pulse-ring"></div>
+                    <span class="icon" role="img" aria-label="Envelope">💌</span>
+                </div>
+                <h3>You have a message</h3>
+                <button class="btn-primary" onclick="openMsg()">
+                    <span>Open Now</span> ✨
+                </button>
+            </div>
+
+            <div class="message-container">
+                <span id="msg"></span><span class="cursor hidden" id="cursor"></span>
+            </div>
+
+            <button id="back" onclick="closeMsg()">← Back</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
